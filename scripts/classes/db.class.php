@@ -1,17 +1,47 @@
 <?php
 
+/**
+ * Class DataBase
+ * 
+ * A class for handling database operations.
+ */
 class DataBase
 {
+    /**
+     * @var array $tables An associative array mapping table names to their corresponding names in the database.
+     */
     protected $tables = [
         'login' => 'login_table'
     ];
 
+    /**
+     * @var string $dbhost The database host.
+     */
     private $dbhost;
+
+    /**
+     * @var string $dbuser The database username.
+     */
     private $dbuser;
+
+    /**
+     * @var string $dbpass The database password.
+     */
     private $dbpass;
+
+    /**
+     * @var string $dbname The database name.
+     */
     private $dbname;
+
+    /**
+     * @var mysqli $conn The database connection.
+     */
     protected $conn;
 
+    /**
+     * Constructor method to initialize the database connection.
+     */
     public function __construct()
     {
         $this->dbhost = $_ENV['DB_HOST'];
@@ -22,6 +52,12 @@ class DataBase
         $this->conn = $this->connect();
     }
 
+    /**
+     * Establishes a connection to the database using MySQLi.
+     *
+     * @return mysqli The database connection object.
+     * @throws Exception If an error occurs during the connection.
+     */
     protected function connect()
     {
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -34,6 +70,13 @@ class DataBase
         }
     }
 
+    /**
+     * Establishes a connection to the database using PDO.
+     *
+     * @param string $pdo_type The type of PDO connection.
+     * @return PDO The database connection object.
+     * @throws PDOException If an error occurs during the connection.
+     */
     protected function connect_pdo($pdo_type = 'fetch')
     {
         try {
@@ -55,14 +98,19 @@ class DataBase
         }
     }
 
+    /**
+     * Inserts data into a table in the database.
+     *
+     * @param string $table The table name.
+     * @param array $values An associative array of column-value pairs.
+     * @return mixed The last inserted entry if successful, otherwise false.
+     */
     public function insert(string $table, array $values = [])
     {
-        $columns =  array_keys($values);
-        $parsed_values = [];
-
-        foreach ($values as $key => $value) {
-            $parsed_values[$key] = "'$value'";
-        }
+        $columns = array_keys($values);
+        $parsed_values = array_map(function ($value) {
+            return "'" . $value . "'";
+        }, $values);
 
         $column_clause = '`' . $this->tables[$table] . '` (' . implode(', ', $columns) . ')';
         $value_clause = '(' . implode(', ', $parsed_values) . ')';
@@ -73,6 +121,14 @@ class DataBase
         return $this->get_last_entry($table);
     }
 
+    /**
+     * Updates data in a table in the database.
+     *
+     * @param string $table The table name.
+     * @param array $values An associative array of column-value pairs to update.
+     * @param string $conditions The conditions to match for the update.
+     * @return bool True if successful, otherwise false.
+     */
     public function update(string $table, array $values, string $conditions)
     {
         if (!$this->entry_exists($table, $conditions)) return False;
@@ -87,6 +143,13 @@ class DataBase
         return True;
     }
 
+    /**
+     * Deletes data from a table in the database.
+     *
+     * @param string $table The table name.
+     * @param string $conditions The conditions to match for the delete.
+     * @return bool True if successful, otherwise false.
+     */
     public function delete(string $table, string $conditions)
     {
         if (!$this->entry_exists($table, $conditions)) return False;
@@ -100,7 +163,16 @@ class DataBase
         return True;
     }
 
-    public function get_entry_by_key(string $table, $value, string $key ='id', array $selectors = ['*'])
+    /**
+     * Retrieves an entry from a table in the database.
+     *
+     * @param string $table The table name.
+     * @param mixed $value The value to match.
+     * @param string $key The column to match.
+     * @param array $selectors The columns to select.
+     * @return mixed The fetched entry if found, otherwise false.
+     */
+    public function get_entry_by_key(string $table, $value, string $key = 'id', array $selectors = ['*'])
     {
         $select_clause = implode(', ', $selectors);
         $table_clause = '`' . $this->tables[$table] . '`';
@@ -110,6 +182,14 @@ class DataBase
         return $this->get_entry($query);
     }
 
+    /**
+     * Retrieves a list of entries from a table in the database.
+     *
+     * @param string $table The table name.
+     * @param string $conditions The conditions to match.
+     * @param array $selectors The columns to select.
+     * @return array The fetched entries if found, otherwise an empty array.
+     */
     public function get_entry_list(string $table, string $conditions, array $selectors = ['*'])
     {
         $select_clause = implode(', ', $selectors);
@@ -120,6 +200,14 @@ class DataBase
         return $this->get_entry($query, true);
     }
 
+    /**
+     * Retrieves the last entry from a table in the database.
+     *
+     * @param string $table The table name.
+     * @param string $key The column to order by.
+     * @param array $selectors The columns to select.
+     * @return mixed The last fetched entry if found, otherwise false.
+     */
     public function get_last_entry(string $table, string $key = 'id', array $selectors = ['*'])
     {
         $select_clause = implode(', ', $selectors);
@@ -130,6 +218,13 @@ class DataBase
         return $entry;
     }
 
+    /**
+     * Checks if an entry exists in a table in the database.
+     *
+     * @param string $table The table name.
+     * @param string $conditions The conditions to match.
+     * @return bool True if the entry exists, otherwise false.
+     */
     public function entry_exists(string $table, string $conditions)
     {
         $table_clause = '`' . $this->tables[$table] . '`';
@@ -139,6 +234,13 @@ class DataBase
         return ($this->get_entry($query)) ? true : false;
     }
 
+    /**
+     * Retrieves an entry or a list of entries from the database based on the provided query.
+     *
+     * @param string $query The SQL query.
+     * @param bool $multiple Indicates whether to fetch multiple entries.
+     * @return mixed The fetched entry or list of entries if found, otherwise false.
+     */
     protected function get_entry($query, $multiple = false)
     {
         if ($multiple) {
@@ -155,6 +257,12 @@ class DataBase
         return mysqli_fetch_assoc(mysqli_query($this->conn, $query));
     }
 
+    /**
+     * Replaces logical operators && with AND, || with OR, and ! with NOT in a condition string.
+     *
+     * @param string $conditions The condition string.
+     * @return string The modified condition string.
+     */
     protected function get_condition_clause(string $conditions)
     {
         return str_replace(["&&", "||", "!"], ["AND", "OR", "NOT"], $conditions);
