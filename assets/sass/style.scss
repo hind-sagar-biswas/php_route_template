@@ -1,0 +1,15 @@
+@import './variables';
+
+@function break($point-name) {
+    @return map-get($breakpoints, $point-name);
+}
+
+@mixin mobile {
+    @media (max-width: break(md)) {
+        @content;
+    }
+}
+
+a {
+  text-decoration: none !important;
+}

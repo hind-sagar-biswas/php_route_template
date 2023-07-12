@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteBase /php_route_template/
+
+RewriteCond %{DOCUMENT_ROOT}/assets/$1 -f
+RewriteRule ^(.*)$ assets/$1 [L]
+
+RewriteCond %{DOCUMENT_ROOT}/node_modules/$1 -f
+RewriteRule ^(.*)$ node_modules/$1 [L]
+
+RewriteCond %{THE_REQUEST} \s/assets/ [NC,OR]
+RewriteCond %{THE_REQUEST} \s/node_modules/ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L,QSA]
