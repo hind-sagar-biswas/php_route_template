@@ -29,6 +29,14 @@ function findKeyByNeedle($arr, $needle)
     return '/404'; // Needle not found
 }
 
+function flatenAssocArray($array) {
+    $pairs = array_map(function ($key, $value) {
+        return "{$key} = '{$value}'";
+    }, array_keys($array), $array);
+    
+    return implode(', ', $pairs);
+}
+
 function enroute($name) {
     $parts = explode(':', $name);
     $method = strtoupper($parts[0]);
