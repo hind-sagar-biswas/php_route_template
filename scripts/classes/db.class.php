@@ -11,7 +11,7 @@ class DataBase
      * @var array $tables An associative array mapping table names to their corresponding names in the database.
      */
     protected $tables = [
-        'login' => 'login_table'
+        'user' => 'users'
     ];
 
     /**
@@ -177,6 +177,24 @@ class DataBase
         $select_clause = implode(', ', $selectors);
         $table_clause = '`' . $this->tables[$table] . '`';
         $condition_clause = "$key = '$value'";
+
+        $query = "SELECT $select_clause FROM $table_clause WHERE $condition_clause;";
+        return $this->get_entry($query);
+    }
+
+    /**
+     * Retrieves an entry from a table in the database.
+     *
+     * @param string $table The table name.
+     * @param string $conditions The conditions to match.
+     * @param array $selectors The columns to select.
+     * @return array The fetched entry if found, otherwise an empty array.
+     */
+    public function get_entry_by_condition(string $table, string $conditions, array $selectors = ['*'])
+    {
+        $select_clause = implode(', ', $selectors);
+        $table_clause = '`' . $this->tables[$table] . '`';
+        $condition_clause = $this->get_condition_clause($conditions);
 
         $query = "SELECT $select_clause FROM $table_clause WHERE $condition_clause;";
         return $this->get_entry($query);
