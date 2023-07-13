@@ -16,6 +16,12 @@ class Router
     {
         $routes = APP_ROUTES[$_SERVER['REQUEST_METHOD']];
 
+        $flash_msg = null;
+        if (isset($_SESSION['flash_msg'])) {
+            $flash_msg = $_SESSION['flash_msg'];
+            unset($_SESSION['flash_msg']);
+        }
+
         // Include the header partial
         require_once APP_TEMPLATES . 'partials/header.php';
 
@@ -55,7 +61,6 @@ class Router
     public static function route($uri, $vars = [])
     {
         $path = preg_replace('/' . preg_quote($_ENV['APP_ROUTE_ROOT'], '/') . '/', '', $uri, 1);
-
         $parts = explode('/', $path);
 
         if ($parts[1] == 'api') {

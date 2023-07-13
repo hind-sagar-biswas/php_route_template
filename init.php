@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Pre requires
 require_once __DIR__ . '/vendor/autoload.php';

@@ -137,5 +137,7 @@ function redirect($name, array $vars = [], $message = null)
     $query = (!empty($vars)) ? '?' . flatenAssocArray($vars, false) : '';
 
     $route = $target . $query;
+
+    if ($message) $_SESSION['flash_msg'] = $message;
     header('Location: ' . $route);
 }
