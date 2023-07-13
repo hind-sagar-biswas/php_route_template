@@ -61,18 +61,30 @@ function findKeyByNeedle($arr, $needle)
  * Flattens an associative array into a string of key-value pairs.
  *
  * @param array $array The associative array to flatten.
+ * @param bool $sql for SQL query, else for url query (Default: true).
  * @return string The flattened string of key-value pairs.
  */
-function flatenAssocArray($array)
+function flatenAssocArray($array, $sql = true)
 {
-    $pairs = array_map(function ($key, $value) {
+    $pairs = ($sql) 
+                ? array_map(function ($key, $value) {
         return "{$key} = '{$value}'";
+    }, array_keys($array), $array) 
+                : array_map(function ($key, $value) {
+        return "{$key}={$value}";
     }, array_keys($array), $array);
 
-    return implode(', ', $pairs);
+    return ($sql) ? implode(', ', $pairs) : implode('&', $pairs);
 }
 
-
+/**
+ * Sets cookie to the root.
+ * 
+ * @param string $name The name of the cookie
+ * @param string $value The value of the cookie
+ * @param int $expiry days for expiry (default: 30 days)
+ * @return void
+ */
 function set_cookie(string $name, $value, int $expiry = 30): void
 {
     setcookie($name, $value, $expiry, $_ENV['APP_ROUTE_ROOT'] . '/');
@@ -116,4 +128,14 @@ function asset($file)
 function image($file)
 {
     return APP_IMAGES . $file;
+}
+
+
+function redirect($name, array $vars = [], $message = null)
+{
+    $target = enroute('get:' . $name);
+    $query = (!empty($vars)) ? '?' . flatenAssocArray($vars, false) : '';
+
+    $route = $target . $query;
+    header('Location: ' . $route);
 }
