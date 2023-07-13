@@ -72,6 +72,12 @@ function flatenAssocArray($array)
     return implode(', ', $pairs);
 }
 
+
+function set_cookie(string $name, $value, int $expiry = 30): void
+{
+    setcookie($name, $value, $expiry, $_ENV['APP_ROUTE_ROOT'] . '/');
+}
+
 /**
  * Constructs the URL route based on the given name.
  *

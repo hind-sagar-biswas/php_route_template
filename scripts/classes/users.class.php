@@ -2,7 +2,7 @@
 
 class User extends DataBase
 {
-    protected $userTableName = 'user';
+    protected $userTableName = 'user.login.data';
     protected $userTable;
 
     public function __construct()
@@ -39,14 +39,19 @@ class User extends DataBase
         return $this->get_entry_by_key($this->userTableName, $uid);
     }
 
-    protected function add_new_user($username, $email, $password)
+    protected function add_new_user($user)
     {
-        $userData = [
-            'username' => $username,
-            'email' => $email,
-            'password' => md5($password),
-        ];
-        return $this->insert($this->userTableName, $userData);
+        if (empty($user['username'])) return [False, 'Error: username can\'t be empty!'];
+        if (empty($user['email'])) return [False, 'Error: email can\'t be empty!'];
+        if (empty($user['password'])) return [False, 'Error: password can\'t be empty!'];
+
+        if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) return [False, 'Error: invalid email!'];
+
+        if ($this->check_user_exists($user['username'], 'username')) return [False, 'Error: username already taken!'];
+        if ($this->check_user_exists($user['email'], 'email')) return [False, 'Error: email already taken!'];
+
+        $user['password'] = md5($user['password']);
+        return $this->insert($this->userTableName, $user);
     }
 
     protected function delete_user_by_id(int $uid)

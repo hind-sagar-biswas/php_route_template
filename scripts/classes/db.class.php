@@ -11,7 +11,8 @@ class DataBase
      * @var array $tables An associative array mapping table names to their corresponding names in the database.
      */
     protected $tables = [
-        'user' => 'users'
+        'user.login.data' => 'users',
+        'user.login.token' => 'login_tokens',
     ];
 
     /**
