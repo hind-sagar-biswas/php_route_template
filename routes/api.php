@@ -15,7 +15,9 @@ $API_GET_ROUTES = [
     '/' => ['index.php', 'root']
 ];
 
-$API_POST_ROUTES = [];
+$API_POST_ROUTES = [
+    '/fetch/meta' => ['fetchmeta.php', 'fetch.meta']
+];
 
 
 define('API_ROUTES', [

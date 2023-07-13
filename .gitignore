@@ -5,3 +5,4 @@ info.txt
 .env
 node_modules/
 vendor/
+/$__*/

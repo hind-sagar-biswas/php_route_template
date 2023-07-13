@@ -1,4 +1,4 @@
 <?php
 
-$data = ['error' => 'API yet to be created!'];
+$data = ['error' => 'No API @ current route!'];
 echo json_encode($data, JSON_PRETTY_PRINT);
