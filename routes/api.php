@@ -19,9 +19,3 @@ $API_POST_ROUTES = [
     '/fetch/meta' => ['fetchmeta.php', 'fetch.meta']
 ];
 
-
-define('API_ROUTES', [
-    'err' => $API_ERROR_ROUTES,
-    'get' => $API_GET_ROUTES,
-    'post' => $API_POST_ROUTES,
-]);

@@ -21,8 +21,3 @@ $APP_POST_ROUTES = [
 ];
 
 
-define('APP_ROUTES', [
-    'err' => $APP_ERROR_ROUTES,
-    'get' => $APP_GET_ROUTES,
-    'post' => $APP_POST_ROUTES,
-]);

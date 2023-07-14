@@ -34,6 +34,17 @@ define('APP_FUNCTION', __DIR__ . '/scripts/functions/');
 define('APP_CLASS', __DIR__ . '/scripts/classes/');
 define('APP_TEMPLATES', __DIR__ . '/templates/');
 define('APP_COMPONENTS', APP_TEMPLATES . 'components/');
+// Routes
+define('APP_ROUTES', [
+    'err' => $APP_ERROR_ROUTES,
+    'get' => $APP_GET_ROUTES,
+    'post' => $APP_POST_ROUTES,
+]);
+define('API_ROUTES', [
+    'err' => $API_ERROR_ROUTES,
+    'get' => $API_GET_ROUTES,
+    'post' => $API_POST_ROUTES,
+]);
 
 
 // Parse Request
