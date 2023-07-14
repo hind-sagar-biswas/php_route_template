@@ -87,7 +87,7 @@ function flatenAssocArray($array, $sql = true)
  */
 function set_cookie(string $name, $value, int $expiry = 30): void
 {
-    setcookie($name, $value, $expiry, $_ENV['APP_ROUTE_ROOT'] . '/');
+    setcookie($name, $value, $expiry, APP_ROOT . '/');
 }
 
 /**
@@ -99,13 +99,13 @@ function set_cookie(string $name, $value, int $expiry = 30): void
 function enroute($name)
 {
     $parts = explode(':', $name);
-    $method = strtoupper($parts[0]);
+    $method = $parts[0];
 
     array_shift($parts);
     $needle = implode(':', $parts);
     $heystack = APP_ROUTES[$method];
 
-    return $_ENV['APP_ROUTE_ROOT'] . findKeyByNeedle($heystack, $needle);
+    return APP_ROOT . findKeyByNeedle($heystack, $needle);
 }
 
 /**

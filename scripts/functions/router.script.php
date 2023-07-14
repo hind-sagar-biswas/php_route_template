@@ -14,7 +14,7 @@ class Router
      */
     private static function app_route($path, $vars = [])
     {
-        $routes = APP_ROUTES[$_SERVER['REQUEST_METHOD']];
+        $routes = APP_ROUTES[REQUEST['method']];
 
         $flash_msg = null;
         if (isset($_SESSION['flash_msg'])) {
@@ -29,7 +29,7 @@ class Router
             extract($vars, EXTR_SKIP);
             require APP_VIEW . $routes[$path][0];
         } else {
-            require APP_ERROR_PAGES . APP_ROUTES['ERR']['404'];
+            require APP_ERROR_PAGES . APP_ROUTES['err']['404'];
         }
 
         // Include the footer partial
@@ -44,11 +44,11 @@ class Router
      */
     private static function api_route($path)
     {
-        $routes = API_ROUTES[$_SERVER['REQUEST_METHOD']];
+        $routes = API_ROUTES[REQUEST['method']];
         if (array_key_exists($path, $routes)) {
             header("Content-Type: application/json");
             require API_VIEW . $routes[$path][0];
-        } else require APP_ERROR_PAGES . API_ROUTES['ERR']['404'];
+        } else require APP_ERROR_PAGES . API_ROUTES['err']['404'];
     }
 
     /**
@@ -60,7 +60,7 @@ class Router
      */
     public static function route($uri, $vars = [])
     {
-        $path = preg_replace('/' . preg_quote($_ENV['APP_ROUTE_ROOT'], '/') . '/', '', $uri, 1);
+        $path = preg_replace('/' . preg_quote(APP_ROOT, '/') . '/', '', $uri, 1);
         $parts = explode('/', $path);
 
         if ($parts[1] == 'api') {

@@ -16,11 +16,13 @@ $APP_GET_ROUTES = [
     '/' => ['index.php', 'root'],
 ];
 
-$APP_POST_ROUTES = [];
+$APP_POST_ROUTES = [
+    '/' => ['index.php', 'root'],
+];
 
 
 define('APP_ROUTES', [
-    'ERR' => $APP_ERROR_ROUTES,
-    'GET' => $APP_GET_ROUTES,
-    'POST' => $APP_POST_ROUTES,
+    'err' => $APP_ERROR_ROUTES,
+    'get' => $APP_GET_ROUTES,
+    'post' => $APP_POST_ROUTES,
 ]);

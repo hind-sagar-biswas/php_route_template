@@ -21,7 +21,7 @@ $API_POST_ROUTES = [
 
 
 define('API_ROUTES', [
-    'ERR' => $API_ERROR_ROUTES,
-    'GET' => $API_GET_ROUTES,
-    'POST' => $API_POST_ROUTES,
+    'err' => $API_ERROR_ROUTES,
+    'get' => $API_GET_ROUTES,
+    'post' => $API_POST_ROUTES,
 ]);
