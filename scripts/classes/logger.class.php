@@ -42,7 +42,7 @@ class Logger extends Token
      * @param null
      * @return bool
      */
-    public function checkLogin()
+    public function is_logged_in()
     {
         // check the session
         if (isset($_SESSION['username'])) {
@@ -59,7 +59,7 @@ class Logger extends Token
     }
 
 
-    public function remember_me(int $user_id, int $day = 30): void
+    private function remember_me(int $user_id, int $day = 30): void
     {
         [$selector, $validator, $token] = $this->generate_tokens();
 
@@ -77,7 +77,7 @@ class Logger extends Token
 
     public function logout(): bool
     {
-        if ($this->checkLogin()) {
+        if ($this->is_logged_in()) {
             // delete the user token
             $this->delete_user_token($_SESSION['user_id']);
 

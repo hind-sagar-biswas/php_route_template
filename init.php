@@ -6,10 +6,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/routes/app.php';
 require_once __DIR__ . '/routes/api.php';
 
-// Loads
+// Load Env Variables
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-
-// Usage
 $dotenv->safeLoad();
 
 //// CONSTANTS
