@@ -10,7 +10,8 @@ Simple template with Routing for PHP.
 
 ### Composer packages
 
-* phpdotenv
+* `vlucas/phpdotenv`
+* `imangazaliev/didom`
 
 ## Note
 
