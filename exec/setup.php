@@ -60,6 +60,23 @@ $file = __DIR__ . "/../.env";
 $fp = fopen($file, "w");
 fwrite($fp, $template);
 fclose($fp);
+// Set to .htaccess
+$file = __DIR__ . "/../.htaccess";
+$fp = fopen($file, "w");
+fwrite($fp, "RewriteEngine On
+RewriteBase " . $vars['APP_ROOT'] . "/
+
+RewriteCond %{DOCUMENT_ROOT}/assets/$1 -f
+RewriteRule ^(.*)$ assets/$1 [L]
+
+RewriteCond %{DOCUMENT_ROOT}/node_modules/$1 -f
+RewriteRule ^(.*)$ node_modules/$1 [L]
+
+RewriteCond %{THE_REQUEST} \s/assets/ [NC,OR]
+RewriteCond %{THE_REQUEST} \s/node_modules/ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L,QSA]");
+fclose($fp);
 
 // Set variable values
 
