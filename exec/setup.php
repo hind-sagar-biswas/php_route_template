@@ -2,8 +2,8 @@
 
 function get_input($prompt, $default = null)
 {
-    $default = ($default) ? "[$default]" : '';
-    $input = readline("$prompt $default: ");
+    $default_show = ($default) ? "[$default]" : '';
+    $input = readline("$prompt $default_show: ");
     return (trim($input) == "") ? $default : $input;
 }
 
