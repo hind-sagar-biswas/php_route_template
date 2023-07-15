@@ -46,6 +46,7 @@ class Router
     {
         $routes = API_ROUTES[REQUEST['method']];
         if (array_key_exists($path, $routes)) {
+            header("Access-Control-Allow-Origin: *");
             header("Content-Type: application/json");
             require API_VIEW . $routes[$path][0];
         } else require APP_ERROR_PAGES . API_ROUTES['err']['404'];
